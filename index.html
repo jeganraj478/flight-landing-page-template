@@ -1,165 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Japan Airlines - Book Flights</title>
-<link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/f/f2/Japan_Airlines_logo.svg" />
-<style>
-    body {
-        font-family: 'Segoe UI', Arial, sans-serif;
-        margin: 0;
-        background: #f4f4f4;
-        color: #333;
-    }
-
-    /* HEADER / HERO */
-    header {
-        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                    url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-        color: white;
-        padding: 50px 20px;
-        text-align: center;
-    }
-    header img {
-        height: 60px;
-        margin-bottom: 15px;
-    }
-    header h1 {
-        font-size: 2rem;
-        font-weight: bold;
-        margin: 0;
-    }
-    header p {
-        margin-top: 10px;
-        font-size: 1.1rem;
-        opacity: 0.9;
-    }
-
-    /* MAIN CONTAINER */
-    .container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-        text-align: center;
-    }
-
-    /* BUTTON GROUP */
-    .btn-group {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-bottom: 40px;
-        flex-wrap: wrap;
-    }
-    .btn {
-        background: #b40000;
-        color: white;
-        padding: 14px 30px;
-        border: none;
-        border-radius: 30px;
-        font-size: 1rem;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-    }
-    .btn:hover {
-        background: #900000;
-        transform: translateY(-2px);
-    }
-
-    /* SEARCH BOX */
-    .search-box {
-        width: 70%;
-        padding: 14px;
-        border: 2px solid #b40000;
-        border-radius: 30px;
-        cursor: pointer;
-        background: white;
-        font-size: 1rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        transition: all 0.3s;
-    }
-    .search-box:hover {
-        border-color: #900000;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-    }
-
-    /* MODAL */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-    .modal-content {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        padding: 25px;
-        border-radius: 12px;
-        max-width: 450px;
-        width: 90%;
-        animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-    .modal-content h2 {
-        margin-top: 0;
-        color: #b40000;
-        font-size: 1.4rem;
-    }
-    .form-group {
-        margin: 15px 0;
-        text-align: left;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: bold;
-    }
-    .form-group select, 
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-    }
-    .modal-footer {
-        text-align: right;
-        margin-top: 20px;
-    }
-    .close-btn {
-        background: #999;
-        margin-right: 10px;
-    }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Japan Airlines - Book Flights</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+<!-- ================= HEADER / HERO SECTION ================= -->
 <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Japan_Airlines_logo.svg/320px-Japan_Airlines_logo.svg.png" alt="Japan Airlines Logo">
     <h1>JAPAN AIRLINES</h1>
     <p>Book Domestic and International Flights with Ease</p>
 </header>
 
+<!-- ================= MAIN CONTENT ================= -->
 <div class="container">
+    <!-- Buttons for Domestic & International Flights -->
     <div class="btn-group">
         <button class="btn">Domestic Flights</button>
         <button class="btn">International Flights</button>
     </div>
 
+    <!-- Search box that triggers modal -->
     <input type="text" class="search-box" placeholder="Click here to search flights" readonly />
 </div>
 
-<!-- Modal -->
+<!-- ================= MODAL POPUP ================= -->
 <div class="modal" id="searchModal">
     <div class="modal-content">
         <h2>Search Flights</h2>
@@ -185,25 +52,8 @@
     </div>
 </div>
 
-<script>
-    const modal = document.getElementById('searchModal');
-    const searchBox = document.querySelector('.search-box');
-    const closeModal = document.getElementById('closeModal');
-
-    searchBox.addEventListener('click', () => {
-        modal.style.display = 'flex';
-    });
-
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-</script>
+<!-- ================= SCRIPTS ================= -->
+<script src="script.js"></script>
 
 </body>
 </html>
