@@ -6,35 +6,47 @@
 <title>Japan Airlines - Flight Booking</title>
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', sans-serif;
         margin: 0;
-        background: #f8f8f8;
+        background: #f9f9f9;
     }
     header {
-        text-align: center;
-        padding: 20px;
-        background: #a00000;
+        position: relative;
+        height: 180px;
+        background: url('https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         color: white;
+    }
+    header h1 {
+        background: rgba(0,0,0,0.5);
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 28px;
     }
     .buttons {
         display: flex;
         justify-content: center;
         margin: 20px;
-        gap: 10px;
+        gap: 15px;
     }
     .btn {
-        padding: 10px 20px;
+        padding: 12px 25px;
         border: none;
-        background: #a00000;
+        background: linear-gradient(135deg, #a00000, #d60000);
         color: white;
         font-size: 16px;
-        border-radius: 5px;
+        border-radius: 25px;
         cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease, background 0.3s ease;
     }
     .btn:hover {
-        background: #c00000;
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #d60000, #ff0000);
     }
-    /* Overlay */
+    /* Overlay with animation */
     .overlay {
         display: none;
         position: fixed;
@@ -44,6 +56,11 @@
         justify-content: center;
         align-items: center;
         z-index: 1000;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
     .popup {
         background: white;
@@ -54,9 +71,15 @@
         position: relative;
         max-height: 90vh;
         overflow-y: auto;
+        animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
     .popup h2 {
         margin-top: 0;
+        color: #a00000;
     }
     .close-btn {
         position: absolute;
@@ -74,7 +97,7 @@
         font-weight: bold;
         margin-bottom: 5px;
     }
-    input, select {
+    input {
         width: 100%;
         padding: 8px;
         border-radius: 5px;
@@ -85,34 +108,40 @@
         background: #fff;
     }
     .search-btn {
-        background: #a00000;
+        background: linear-gradient(135deg, #a00000, #d60000);
         color: white;
-        padding: 10px;
+        padding: 12px;
         border: none;
-        border-radius: 5px;
+        border-radius: 25px;
         font-size: 16px;
         cursor: pointer;
         width: 100%;
+        transition: transform 0.2s ease;
     }
     .search-btn:hover {
-        background: #c00000;
+        transform: scale(1.05);
     }
-    /* Airport list popup */
+    /* Airport list styles */
     .airport-section {
         margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        overflow: hidden;
     }
     .airport-section h3 {
-        margin-bottom: 5px;
+        margin: 0;
+        padding: 8px 10px;
         font-size: 14px;
+        background: #f2f2f2;
         color: #a00000;
     }
     .airport-item {
-        padding: 5px;
-        border-bottom: 1px solid #eee;
+        padding: 8px 10px;
         cursor: pointer;
+        transition: background 0.2s;
     }
     .airport-item:hover {
-        background: #f0f0f0;
+        background: #ffe5e5;
     }
 </style>
 </head>
@@ -165,7 +194,7 @@
 
         <div class="airport-section">
             <h3>Major Cities</h3>
-            <div class="airport-item" onclick="selectAirport('Tokyo - All Airports')">Tokyo - All Airports (TYO)</div>
+            <div class="airport-item" onclick="selectAirport('Tokyo - All Airports (TYO)')">Tokyo - All Airports (TYO)</div>
         </div>
 
         <div class="airport-section">
@@ -179,15 +208,30 @@
         </div>
 
         <div class="airport-section">
-            <h3>Kanto</h3>
+            <h3>Kanto / Shinetsu</h3>
             <div class="airport-item" onclick="selectAirport('Tokyo (Haneda) - HND')">Tokyo (Haneda) - HND</div>
             <div class="airport-item" onclick="selectAirport('Tokyo (Narita) - NRT')">Tokyo (Narita) - NRT</div>
+        </div>
+
+        <div class="airport-section">
+            <h3>Tokai / Hokuriku</h3>
+            <div class="airport-item" onclick="selectAirport('Nagoya (Chubu) - NGO')">Nagoya (Chubu) - NGO</div>
         </div>
 
         <div class="airport-section">
             <h3>Kansai</h3>
             <div class="airport-item" onclick="selectAirport('Osaka (Kansai) - KIX')">Osaka (Kansai) - KIX</div>
             <div class="airport-item" onclick="selectAirport('Osaka (Itami) - ITM')">Osaka (Itami) - ITM</div>
+        </div>
+
+        <div class="airport-section">
+            <h3>Kyushu</h3>
+            <div class="airport-item" onclick="selectAirport('Fukuoka - FUK')">Fukuoka - FUK</div>
+        </div>
+
+        <div class="airport-section">
+            <h3>Okinawa</h3>
+            <div class="airport-item" onclick="selectAirport('Naha - OKA')">Naha - OKA</div>
         </div>
     </div>
 </div>
