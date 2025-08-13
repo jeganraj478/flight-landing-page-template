@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Japan Airlines - Book Flights</title>
+<title>Japan Airlines - Flight Booking</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -12,40 +12,34 @@
     }
     header {
         text-align: center;
-        padding: 30px;
+        padding: 40px 20px;
+        background: url('https://images.unsplash.com/photo-1508612761958-e931b1b56f19?auto=format&fit=crop&w=1350&q=80') center/cover;
         color: white;
-        background: url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf') center/cover no-repeat;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-    header h1 {
-        background: rgba(0,0,0,0.5);
-        padding: 10px 20px;
-        display: inline-block;
-        border-radius: 8px;
-        font-size: 1.8rem;
+        font-size: 24px;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
     }
     .buttons {
         display: flex;
         justify-content: center;
         margin: 20px;
         gap: 10px;
-        flex-wrap: wrap;
     }
     .btn {
-        padding: 12px 25px;
+        padding: 12px 24px;
         border: none;
-        background: #e63946;
+        background: #004080;
         color: white;
         font-size: 16px;
         border-radius: 6px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: transform 0.2s ease, background 0.2s ease;
     }
     .btn:hover {
-        background: #d62839;
-        transform: translateY(-2px);
+        background: #0059b3;
+        transform: scale(1.05);
     }
-    /* Overlay base */
+    /* Popup overlay */
     .overlay {
         display: none;
         position: fixed;
@@ -54,32 +48,26 @@
         background: rgba(0,0,0,0.6);
         justify-content: center;
         align-items: center;
-        animation: fadeIn 0.3s ease;
-        padding: 10px;
+        z-index: 1000;
     }
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    /* Popup box */
     .popup {
         background: white;
         padding: 20px;
-        border-radius: 12px;
-        width: 100%;
+        border-radius: 10px;
+        width: 90%;
         max-width: 600px;
         position: relative;
-        animation: slideUp 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: slideDown 0.3s ease;
     }
-    @keyframes slideUp {
-        from {transform: translateY(30px); opacity: 0;}
-        to {transform: translateY(0); opacity: 1;}
+    @keyframes slideDown {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
     .popup h2 {
         margin-top: 0;
+        color: #004080;
         text-align: center;
-        color: #1d3557;
     }
     .close-btn {
         position: absolute;
@@ -88,6 +76,7 @@
         border: none;
         font-size: 20px;
         cursor: pointer;
+        color: #666;
     }
     .form-group {
         margin-bottom: 15px;
@@ -97,60 +86,68 @@
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
+        color: #004080;
     }
-    .select-field {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        cursor: pointer;
-        background: #f1f1f1;
-    }
-    input, select {
+    select, input {
         width: 100%;
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
+        box-sizing: border-box;
     }
     .search-btn {
-        background: #1d3557;
+        background: #004080;
         color: white;
         padding: 12px;
         border: none;
         border-radius: 5px;
         font-size: 16px;
         cursor: pointer;
-        width: calc(100% - 20px);
-        margin: 0 10px;
-        transition: 0.3s ease;
+        width: 100%;
+        transition: background 0.3s ease;
     }
     .search-btn:hover {
-        background: #457b9d;
+        background: #0059b3;
     }
-    /* Airport list popup */
+    /* Airport list overlay */
+    .airport-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+    }
     .airport-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        max-height: 300px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80%;
         overflow-y: auto;
-        padding: 10px;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
     }
     .airport-item {
         padding: 10px;
-        background: #f1f1f1;
-        border-radius: 5px;
+        border-bottom: 1px solid #eee;
         cursor: pointer;
-        transition: 0.2s;
     }
     .airport-item:hover {
-        background: #e0e0e0;
+        background: #f0f0f0;
     }
 </style>
 </head>
 <body>
 
 <header>
-    <h1>Japan Airlines - Book Your Flight</h1>
+    Japan Airlines - Book Your Flight
 </header>
 
 <div class="buttons">
@@ -158,24 +155,20 @@
     <button class="btn" onclick="openPopup('International')">International</button>
 </div>
 
-<!-- Step 1 Popup -->
-<div class="overlay" id="overlay-step1">
+<!-- Popup -->
+<div class="overlay" id="overlay">
     <div class="popup">
-        <button class="close-btn" onclick="closePopup('overlay-step1')">✖</button>
+        <button class="close-btn" onclick="closePopup()">✖</button>
         <h2 id="popup-title">Flight Search</h2>
         
         <div class="form-group">
             <label>From</label>
-            <div class="select-field" onclick="openAirportList('from')">
-                <span id="from-value">Select departure airport</span>
-            </div>
+            <input type="text" id="fromAirport" readonly onclick="openAirportList('from')">
         </div>
         
         <div class="form-group">
             <label>To</label>
-            <div class="select-field" onclick="openAirportList('to')">
-                <span id="to-value">Select arrival airport</span>
-            </div>
+            <input type="text" id="toAirport" readonly onclick="openAirportList('to')">
         </div>
         
         <div class="form-group">
@@ -192,63 +185,43 @@
     </div>
 </div>
 
-<!-- Step 2 Popup (Airport Selection) -->
-<div class="overlay" id="overlay-step2">
-    <div class="popup">
-        <button class="close-btn" onclick="closePopup('overlay-step2')">✖</button>
-        <h2>Select Airport</h2>
-        <div class="airport-list" id="airport-list">
-            <!-- Airports populated via JS -->
-        </div>
+<!-- Airport List -->
+<div class="airport-overlay" id="airportOverlay">
+    <div class="airport-list" id="airportList">
+        <h3>Select Airport</h3>
+        <div class="airport-item" onclick="selectAirport('Tokyo (Haneda) - HND')">Tokyo (Haneda) - HND</div>
+        <div class="airport-item" onclick="selectAirport('Tokyo (Narita) - NRT')">Tokyo (Narita) - NRT</div>
+        <div class="airport-item" onclick="selectAirport('Osaka (Kansai) - KIX')">Osaka (Kansai) - KIX</div>
+        <div class="airport-item" onclick="selectAirport('Sapporo (New Chitose) - CTS')">Sapporo (New Chitose) - CTS</div>
+        <div class="airport-item" onclick="selectAirport('Fukuoka - FUK')">Fukuoka - FUK</div>
+        <div class="airport-item" onclick="selectAirport('Nagoya (Chubu) - NGO')">Nagoya (Chubu) - NGO</div>
     </div>
 </div>
 
 <script>
-const airportData = [
-    { category: "Major Cities", airports: ["Tokyo (Haneda) - HND", "Tokyo (Narita) - NRT", "Osaka (Kansai) - KIX"] },
-    { category: "Hokkaido", airports: ["Sapporo (New Chitose) - CTS", "Hakodate - HKD"] },
-    { category: "Kyushu", airports: ["Fukuoka - FUK", "Kagoshima - KOJ"] },
-];
-
-let selectingField = null;
+let airportField = '';
 
 function openPopup(type) {
     document.getElementById('popup-title').innerText = type + " Flight Search";
-    document.getElementById('overlay-step1').style.display = 'flex';
+    document.getElementById('overlay').style.display = 'flex';
 }
 
-function closePopup(id) {
-    document.getElementById(id).style.display = 'none';
+function closePopup() {
+    document.getElementById('overlay').style.display = 'none';
 }
 
 function openAirportList(field) {
-    selectingField = field;
-    const listContainer = document.getElementById('airport-list');
-    listContainer.innerHTML = '';
-    airportData.forEach(group => {
-        const category = document.createElement('h4');
-        category.innerText = group.category;
-        listContainer.appendChild(category);
-        group.airports.forEach(ap => {
-            const item = document.createElement('div');
-            item.className = 'airport-item';
-            item.innerText = ap;
-            item.onclick = () => selectAirport(ap);
-            listContainer.appendChild(item);
-        });
-    });
-    closePopup('overlay-step1');
-    document.getElementById('overlay-step2').style.display = 'flex';
+    airportField = field;
+    document.getElementById('airportOverlay').style.display = 'flex';
 }
 
 function selectAirport(airport) {
-    if (selectingField === 'from') {
-        document.getElementById('from-value').innerText = airport;
+    if (airportField === 'from') {
+        document.getElementById('fromAirport').value = airport;
     } else {
-        document.getElementById('to-value').innerText = airport;
+        document.getElementById('toAirport').value = airport;
     }
-    closePopup('overlay-step2');
-    document.getElementById('overlay-step1').style.display = 'flex';
+    document.getElementById('airportOverlay').style.display = 'none';
 }
 </script>
 
