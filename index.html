@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Airlines - Flight Booking</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f8f8f8;
+    }
+    header {
+        text-align: center;
+        padding: 40px;
+        background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYZTMTa5dLioJiJOy6J5QJZejOejig2J3TQPeQ2JxHFX6iBqEYb9z127cH&s=10') center/cover no-repeat;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+    .buttons {
+        display: flex;
+        justify-content: center;
+        margin: 20px;
+        gap: 10px;
+    }
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        background: #004080;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .btn:hover {
+        background: #0059b3;
+        transform: scale(1.05);
+    }
+    /* Popup overlay */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .popup {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: slideDown 0.3s ease;
+    }
+    @keyframes slideDown {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    .popup h2 {
+        margin-top: 0;
+        color: #004080;
+        text-align: center;
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px; right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+    }
+    .form-group {
+        margin-bottom: 15px;
+        padding: 0 10px;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #004080;
+    }
+    select, input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    .search-btn {
+        background: #004080;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s ease;
+    }
+    .search-btn:hover {
+        background: #0059b3;
+    }
+    /* Airport list overlay */
+    .airport-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+    }
+    .airport-list {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80%;
+        overflow-y: auto;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .airport-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+    .airport-item:hover {
+        background: #f0f0f0;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    Japan Airlines - Book Your Flight
+</header>
+
+<div class="buttons">
+    <button class="btn" onclick="openPopup('Domestic')">Domestic</button>
+    <button class="btn" onclick="openPopup('International')">International</button>
+</div>
+
+<!-- Popup -->
+<div class="overlay" id="overlay">
+    <div class="popup">
+        <button class="close-btn" onclick="closePopup()">✖</button>
+        <h2 id="popup-title">Flight Search</h2>
+        
+        <div class="form-group">
+            <label>From</label>
+            <input type="text" id="fromAirport" readonly onclick="openAirportList('from')">
+        </div>
+        
+        <div class="form-group">
+            <label>To</label>
+            <input type="text" id="toAirport" readonly onclick="openAirportList('to')">
+        </div>
+        
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date">
+        </div>
+        
+        <div class="form-group">
+            <label>Passengers</label>
+            <input type="number" value="1" min="1">
+        </div>
+        
+        <button class="search-btn" onclick="alert('Search function not implemented')">Search Flights</button>
+    </div>
+</div>
+
+<!-- Airport List -->
+<div class="airport-overlay" id="airportOverlay">
+    <div class="airport-list" id="airportList">
+        <h3>Select Airport</h3>
+        <div class="airport-item" onclick="selectAirport('Tokyo (Haneda) - HND')">Tokyo (Haneda) - HND</div>
+        <div class="airport-item" onclick="selectAirport('Tokyo (Narita) - NRT')">Tokyo (Narita) - NRT</div>
+        <div class="airport-item" onclick="selectAirport('Osaka (Kansai) - KIX')">Osaka (Kansai) - KIX</div>
+        <div class="airport-item" onclick="selectAirport('Sapporo (New Chitose) - CTS')">Sapporo (New Chitose) - CTS</div>
+        <div class="airport-item" onclick="selectAirport('Fukuoka - FUK')">Fukuoka - FUK</div>
+        <div class="airport-item" onclick="selectAirport('Nagoya (Chubu) - NGO')">Nagoya (Chubu) - NGO</div>
+    </div>
+</div>
+
+<script>
+let airportField = '';
+
+function openPopup(type) {
+    document.getElementById('popup-title').innerText = type + " Flight Search";
+    document.getElementById('overlay').style.display = 'flex';
+}
+
+function closePopup() {
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function openAirportList(field) {
+    airportField = field;
+    document.getElementById('airportOverlay').style.display = 'flex';
+}
+
+function selectAirport(airport) {
+    if (airportField === 'from') {
+        document.getElementById('fromAirport').value = airport;
+    } else {
+        document.getElementById('toAirport').value = airport;
+    }
+    document.getElementById('airportOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
